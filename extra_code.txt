@@ -1,0 +1,45 @@
+<----- from controller ----->
+@app.route('/show/<int:id>')
+def show_record(id):
+    data = {
+        'id': id
+    }
+    return render_template("/details.html", projectData = projectClass.show(data))
+
+@app.route('/edit/<int:id>')
+def edit(id):
+    data = {
+        'id': id
+    }
+    return render_template("edit.html", projectData = projectClass.show(data))
+
+@app.route('/update/<int:id>') 
+def update(id):
+    data = {
+        'id': id,
+        "xx":request.form['xx'],
+    }
+    projectClass.update(data)
+    return redirect(f"/show/{id}")
+
+
+<----- from model ----->
+@classmethod
+def show(cls, data):
+   query = "SELECT * FROM projectTable WHERE projectTable.id = %(id)s;"
+   result = connectToMySQL(DB).query_db(query,data)
+   projectTable = cls(result[0])
+   return projectTable
+
+@classmethod
+def update(cls,data):
+   query = "UPDATE projectTable SET xx=%(xx)s, xx=%(xx)s, updated_at = NOW() WHERE id = %(id)s;"
+   return connectToMySQL(DB).query_db(query,data)
+
+@staticmethod
+def validate_projectName(projectName):
+   is_valid = True
+   if form checks:
+      flash("bad form check message")
+      is_valid = False
+   return is_valid
