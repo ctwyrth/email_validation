@@ -48,3 +48,14 @@ class Email:
             flash("Invalid email address!")
             isValid = False
         return isValid
+
+    @staticmethod
+    def validate_unique(email):
+        isUnique = True
+        emails_list = Email.show_all()
+        for item in emails_list:
+            print(item.email)
+            if email['email'] == item.email:
+                flash("That email was already in our database!")
+                isUnique = False
+        return isUnique

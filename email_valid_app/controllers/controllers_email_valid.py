@@ -10,10 +10,11 @@ def index():
 def create():
     if not Email.validate_email(request.form):
         return redirect('/')
-    else:
-        data = {
-            'email': request.form['email']
-        }
+    if not Email.validate_unique(request.form):
+        return redirect('/')
+    data = {
+        'email': request.form['email']
+    }
     id = Email.save(data)
     return redirect(f'/show/{ id }')
 
